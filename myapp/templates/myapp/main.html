@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Home page</h1>
+        {% if is_paginated %}
+        {% for numb in page_obj %}
+            <h2> Number: {{ numb.numbers }}</h2>
+            <p><a href="{% url 'number_detail' numb.id %}">In words</a></p> 
+            <hr>
+        {% endfor %}
+
+    <div>
+
+        <span>    
+            {% if page_obj.has_previous %}
+                <a href="?page={{page_obj.previous_page_number}}">Previous</a>
+            {% endif %}
+
+            <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{page_obj.next_page_number}}">Next</a>
+            {% endif %}                 
+        </span>
+    </div>
+    {% else %}
+    {% for numb in object_list %}
+        <h2>{{numb.numbers}}</h2>
+        <p>{{numb.words}}</p>
+    {% endfor %}
+    {% endif %}
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+    <script>
+        $(".loader").slice(0, 4).show();
+
+        $(".loadMore").on("click", function() {
+            $(".loader:hidden").slice(0, 4).show();
+
+            if($(".loader:hidden").length ==0)
+            {
+               $(".loadMore").fadeOut();
+            }
+        })
+    </script>
+</body>
+</html>
